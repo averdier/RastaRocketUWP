@@ -124,7 +124,7 @@ namespace RastaRocketUWP.ViewModels
 
         private async void OnRefreshItemsClick(ItemClickEventArgs args)
         {
-            
+            await LoadDataAsync(_currentState);
         }
 
         private void OnPullRefreshItems(EventArgs e)

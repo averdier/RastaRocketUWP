@@ -19,5 +19,7 @@ namespace RastaRocketUWP.Models
         public List<String> success_keys { get; set; } = new List<string>();
         public List<String> consultants { get; set; } = new List<string>();
 
+        public double rate { get; set; }
+
     }
 }

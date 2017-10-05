@@ -372,8 +372,10 @@ namespace RastaRocketUWP.ViewModels
 
                 if (Rate != null && Rate != String.Empty)
                 {
-                    double rate = -1;
+                    double rate = 0;
                     double.TryParse(Rate, NumberStyles.Float, CultureInfo.InvariantCulture, out rate);
+
+                    model.rate = rate;
                 }
 
                 if (SuccessKey1 != null && SuccessKey1 != String.Empty)
