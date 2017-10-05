@@ -72,6 +72,13 @@ namespace RastaRocketUWP.ViewModels
             set { Set(ref _succesKey2, value); }
         }
 
+        private string _description;
+        public String Description
+        {
+            get { return _description; }
+            set { Set(ref _description, value); }
+        }
+
         private string _succesKey3;
         public String SuccessKey3
         {

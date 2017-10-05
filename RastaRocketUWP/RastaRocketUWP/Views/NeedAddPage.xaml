@@ -71,7 +71,7 @@
             Margin="0,0,12,7"/>
 
         <Grid Grid.Row="1"
-              Margin="10,0">
+              Margin="10,0,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*" />
@@ -367,6 +367,25 @@
 
                 </Grid>
             </toolkit:Expander>
+
+            <Grid Grid.Row="1">
+                <Pivot x:Name="DescriptionPivot" Title="Description" SelectionChanged="DescriptionPivot_SelectionChanged">
+                    <PivotItem Header="Manuscrit" x:Name="InkPivotItem">
+                        <Border BorderThickness="1" BorderBrush="Black">
+                            <InkCanvas x:Name="inkCanvas"/>
+                        </Border>
+                    </PivotItem>
+
+                    <PivotItem Header="Texte" x:Name="ResultPivotItem">
+                        <TextBox x:Name="RecognitionResult"
+                                 Text="{x:Bind ViewModel.Description, Mode=TwoWay}"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch" />
+                    </PivotItem>
+                </Pivot>
+            </Grid>
 
             <CommandBar Grid.Row="2">
                 <AppBarButton x:Name="AddBtn"
