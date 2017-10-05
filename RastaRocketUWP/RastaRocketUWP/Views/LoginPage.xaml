@@ -1,0 +1,64 @@
+﻿<Page
+    x:Class="RastaRocketUWP.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:RastaRocketUWP.Views"
+    xmlns:controls="using:RastaRocketUWP.Controls"
+    xmlns:valueConverters="using:RastaRocketUWP.ValueConverters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <valueConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        
+        <!--Content-->
+        <StackPanel
+            Orientation="Vertical"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Width="320"
+            Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}">
+            
+            <!--Email input-->
+            <TextBox
+                Header="Email address"
+                Text="{x:Bind ViewModel.Email, Mode=TwoWay}"
+                HorizontalAlignment="Stretch"
+                Margin="0,0,0,10" />
+
+            <!--Password input-->
+            <TextBox
+                Header="Install key"
+                Text="{x:Bind ViewModel.Password, Mode=TwoWay}"
+                HorizontalAlignment="Stretch" 
+                Margin="0,0,0,20" />
+
+            <!--Error text-->
+            <TextBlock 
+                Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                Foreground="Red"
+                HorizontalAlignment="Left" 
+                Margin="0,0,0,20" />
+
+            <!--Login button-->
+            <Button
+                Content="Login"
+                HorizontalAlignment="Stretch" 
+                Command="{x:Bind ViewModel.LoginClickCommand}"/>
+        </StackPanel>
+
+        <!--LoadingContentPresenter-->
+        <ContentPresenter
+            Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            <controls:LoadingControl
+                IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                Message="{x:Bind ViewModel.LoadingMessage, Mode=OneWay}" />
+
+        </ContentPresenter>
+    </Grid>
+</Page>
