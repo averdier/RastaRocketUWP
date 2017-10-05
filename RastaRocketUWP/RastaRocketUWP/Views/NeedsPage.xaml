@@ -20,6 +20,7 @@
     </Page.Transitions>
 
     <Page.Resources>
+        <valueConverters:StateToSolidColorBrush x:Key="StateToSolidColorBrush" />
         <valueConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <valueConverters:DateTimeConverter x:Key="DateTimeConverter" />
 
@@ -40,7 +41,7 @@
                          Margin="6"
                          VerticalAlignment="Center"
                          HorizontalAlignment="Center"
-                         Fill="LightGray"/>
+                         Fill="{x:Bind Status, Mode=OneWay, Converter={StaticResource StateToSolidColorBrush}}"/>
                 <TextBlock Grid.Column="1"
                            Text="{x:Bind Title}" 
                            x:Phase="1"  

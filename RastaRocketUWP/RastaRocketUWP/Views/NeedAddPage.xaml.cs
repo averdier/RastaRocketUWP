@@ -95,5 +95,7 @@ namespace RastaRocketUWP.Views
             
             ViewModel.SaveNeed();
         }
+
+        
     }
 }

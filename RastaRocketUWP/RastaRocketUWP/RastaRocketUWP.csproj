@@ -121,7 +121,9 @@
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="ValueConverters\BooleanToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\DateTimeConverter.cs" />
+    <Compile Include="ValueConverters\StateToSolidColorBrush.cs" />
     <Compile Include="ValueConverters\TimeConverter.cs" />
+    <Compile Include="ViewModels\ApiWebPageViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\NeedAddPageViewModel.cs" />
     <Compile Include="ViewModels\NeedDetailViewModel.cs" />

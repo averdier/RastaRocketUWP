@@ -15,6 +15,7 @@
 
     <UserControl.Resources>
         <valueConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <valueConverters:StateToSolidColorBrush x:Key="StateToSolidColorBrush" />
         <valueConverters:DateTimeConverter x:Key="DateTimeConverter" />
     </UserControl.Resources>
     
@@ -80,6 +81,7 @@
                         <toolkit:HeaderedTextBlock 
                                 x:Uid="NeedDetailControl_Status"
                                 Header="HeaderedTextBlock"
+                                Foreground="{x:Bind ControlModel.Item.Status, Mode=OneWay, Converter={StaticResource StateToSolidColorBrush}}"
                                 Text="{x:Bind ControlModel.Item.Status, Mode=OneWay, Converter={StaticResource DateTimeConverter}}"
                                 Orientation="Vertical"
                                 Margin="15,0,0,0" />

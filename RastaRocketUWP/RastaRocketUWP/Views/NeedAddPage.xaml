@@ -114,6 +114,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             
                             <!-- Start at latest -->
@@ -217,6 +218,24 @@
                                  MinWidth="100"/>
                             </StackPanel>
 
+                            <!-- Status -->
+                            <StackPanel Orientation="Vertical"
+                                Grid.Column="6"
+                            Margin="15,0,0,0">
+                                <TextBlock Text="Statut" 
+                               Style="{ThemeResource SubtitleTextBlockStyle}"/>
+
+                                <ComboBox x:Name="StatusComboBoxChoice"
+                                      Margin="0,10,0,0"
+                                      MinWidth="100"
+                                      ItemsSource="{x:Bind ViewModel.PossibleStatus, Mode=OneWay}">
+                                    <i:Interaction.Behaviors>
+                                        <ic:EventTriggerBehavior EventName="SelectionChanged">
+                                            <ic:InvokeCommandAction Command="{x:Bind ViewModel.StatusSelectionChangedCommand}" />
+                                        </ic:EventTriggerBehavior>
+                                    </i:Interaction.Behaviors>
+                                </ComboBox>
+                            </StackPanel>
                         </Grid>
 
                         <!-- Success Keys -->

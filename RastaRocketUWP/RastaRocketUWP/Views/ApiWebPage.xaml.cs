@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RastaRocketUWP.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace RastaRocketUWP.Views
     /// </summary>
     public sealed partial class ApiWebPage : Page
     {
+        public ApiWebPageViewModel ViewModel { get; } = new ApiWebPageViewModel();
+
         public ApiWebPage()
         {
             this.InitializeComponent();

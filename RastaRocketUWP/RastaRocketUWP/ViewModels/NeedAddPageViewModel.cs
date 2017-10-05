@@ -15,7 +15,11 @@ namespace RastaRocketUWP.ViewModels
 {
     public class NeedAddPageViewModel : Observable
     {
-        public bool SaveBtn_IsEnabled { get { return SelectedCustomer != null && SelectedContact != null && Description != null && Description != string.Empty && Title != string.Empty; } }
+        public bool SaveBtn_IsEnabled { get { return SelectedCustomer != null 
+                    && SelectedContact != null 
+                    && Description != null && Description != string.Empty 
+                    && Title != string.Empty
+                    && SelectedStatus != null && SelectedStatus != String.Empty; } }
         private DateTime _startAtLatest;
         public DateTime StartAtLatest
         {
@@ -31,6 +35,14 @@ namespace RastaRocketUWP.ViewModels
         }
 
         public List<String> WeekFrequencys { get { return new List<string> { "1", "2", "3", "4", "5" }; ; } }
+        public List<String> PossibleStatus { get { return new List<string> { "open", "win", "lost"}; ; } }
+
+        private string _selectedStatus;
+        public string SelectedStatus
+        {
+            get { return _selectedStatus; }
+            set { Set(ref _selectedStatus, value); }
+        }
 
         private string _selectedFrequency;
         public string SelectedFrequency
@@ -157,6 +169,7 @@ namespace RastaRocketUWP.ViewModels
         }
 
         public ICommand WeekFrequencySelectionChangedCommand { get; private set; }
+        public ICommand StatusSelectionChangedCommand { get; private set; }
         public ICommand AddClickCommand { get; private set; }
 
         public ICommand CancelClickCommand { get; private set; }
@@ -167,6 +180,22 @@ namespace RastaRocketUWP.ViewModels
         {
             StartAtLatest = DateTime.Now;
             _api = new APIService(Helpers.Settings.Username, Helpers.Settings.Password);
+            StatusSelectionChangedCommand = new RelayCommand<SelectionChangedEventArgs>(OnSatusSelectionChanged);
+            WeekFrequencySelectionChangedCommand = new RelayCommand<SelectionChangedEventArgs>(OnFrequencySelectionChanged);
+        }
+
+        private void OnSatusSelectionChanged(SelectionChangedEventArgs args)
+        {
+            var selectedStatus = args.AddedItems[0] as String;
+            SelectedStatus = selectedStatus;
+            OnPropertyChanged(nameof(SaveBtn_IsEnabled));
+        }
+
+        private void OnFrequencySelectionChanged(SelectionChangedEventArgs args)
+        {
+            var selectedFreq = args.AddedItems[0] as String;
+            SelectedFrequency = selectedFreq;
+            OnPropertyChanged(nameof(SaveBtn_IsEnabled));
         }
 
         private void OnWeekFrequencySelectionChanged(SelectionChangedEventArgs args)
@@ -350,7 +379,7 @@ namespace RastaRocketUWP.ViewModels
                     contact = SelectedContact.Id,
                     title = Title,
                     description = Description,
-                    status = "open",
+                    status = SelectedStatus,
                     start_at_latest = StartAtLatest.ToString("o")
                 };
 
