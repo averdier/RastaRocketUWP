@@ -243,4 +243,7 @@
   <data name="NeedAddPage_WeekFrequency.Text" xml:space="preserve">
     <value>Week frequency</value>
   </data>
+  <data name="Shell_Upload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
 </root>

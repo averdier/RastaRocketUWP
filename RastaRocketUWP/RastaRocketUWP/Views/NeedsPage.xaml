@@ -114,19 +114,60 @@
             <toolkit:Expander x:Name="SearchExpander"
                               x:Uid="SearchExpander_Title"
                               Grid.Row="1"
-                              VerticalAlignment="Top" 
                               Margin="0,0,0,10" 
                               Header="Header"
                               Foreground="White"
+                              HorizontalContentAlignment="Stretch"
                               Background="Gray"
                               IsExpanded="False"
                               ExpandDirection="Down">
-                <Grid Height="250">
-                    <TextBlock HorizontalAlignment="Center"
-                       TextWrapping="Wrap"
-                       Text="This is the content"
-                       VerticalAlignment="Center"
-                       Style="{StaticResource HeaderTextBlockStyle}" />
+                <Grid Margin="10,0,10,20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Title" 
+                               Style="{ThemeResource SubtitleTextBlockStyle}"/>
+
+                        <TextBox x:Uid="NeedAddPage_NeedTitle" 
+                                 Margin="0,10,0,0"
+                                 PlaceholderText="Header" 
+                                 Text="{x:Bind ViewModel.SearchTitle, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical"
+                                Grid.Row="1"
+                                Margin="0,5,0,0">
+
+                        <TextBlock Text="Statut" 
+                               Style="{ThemeResource SubtitleTextBlockStyle}"/>
+
+                        <ComboBox x:Name="StatusComboBoxChoice"
+                                      Margin="0,10,0,0"
+                                      HorizontalAlignment="Stretch"
+                                      ItemsSource="{x:Bind ViewModel.PossibleStatus, Mode=OneWay}">
+                            <i:Interaction.Behaviors>
+                                <ic:EventTriggerBehavior EventName="SelectionChanged">
+                                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.StatusSelectionChangedCommand}" />
+                                </ic:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+                        </ComboBox>
+
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical"
+                                Grid.Row="2"
+                                Margin="0,10,0,0">
+                        <TextBlock Text="Date" 
+                                   Style="{ThemeResource SubtitleTextBlockStyle}"/>
+
+                        <CalendarDatePicker x:Name="StartAtLatestDatePicker"
+                                            HorizontalAlignment="Stretch"
+                                            Margin="0,10,0,0"/>
+                    </StackPanel>
                 </Grid>
             </toolkit:Expander>
 

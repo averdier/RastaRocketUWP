@@ -30,6 +30,55 @@ namespace RastaRocketUWP.ViewModels
 
         public ObservableCollection<NeedModel> NeedsItems { get; private set; } = new ObservableCollection<NeedModel>();
 
+
+
+        private string _searchTitle;
+        public string SearchTitle
+        {
+            get { return _searchTitle; }
+            set {
+                Set(ref _searchTitle, value);
+                if (value != "" && value != string.Empty)
+                {
+                    UpdateSearch();
+                }
+            }
+        }
+
+        public List<String> PossibleStatus { get { return new List<string> { "Tous", "open", "win", "lost" }; ; } }
+
+        private string _selectedSearchStatus;
+        public string SelectedSearchStatus
+        {
+            get { return _selectedSearchStatus; }
+            set {
+                Set(ref _selectedSearchStatus, value);
+                if (value != "" && value != string.Empty)
+                {
+                    UpdateSearch();
+                }
+            }
+        }
+
+        public ICommand StatusSelectionChangedCommand { get; private set; }
+
+        private void OnStatusSelectionChanged(SelectionChangedEventArgs args)
+        {
+            var selectedStatus = args.AddedItems[0] as String;
+            SelectedSearchStatus = selectedStatus;
+        }
+
+        public async void UpdateSearch()
+        {
+            await LoadDataAsync(_currentState, SearchTitle, SelectedSearchStatus);
+        }
+
+        public void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateSearch();
+        }
+
+
         private NeedModel _selected;
 
         public NeedModel Selected
@@ -74,13 +123,14 @@ namespace RastaRocketUWP.ViewModels
             PullRefreshItemsCommand = new RelayCommand<EventArgs>(OnPullRefreshItems);
             AddItemClickCommand = new RelayCommand<RoutedEventArgs>(OnAddItemClick);
             DeleteItemClickCommand = new RelayCommand<RoutedEventArgs>(OnDeleteItemClick);
+            StatusSelectionChangedCommand = new RelayCommand<SelectionChangedEventArgs>(OnStatusSelectionChanged);
             _isLoading = false;
             _selected = new NeedModel();
             StateChangedCommand = new RelayCommand<VisualStateChangedEventArgs>(OnStateChanged);
             _api = new APIService(Helpers.Settings.Username, Helpers.Settings.Password);
         }
 
-        public async Task LoadDataAsync(VisualState currentState)
+        public async Task LoadDataAsync(VisualState currentState, string title ="", string status="")
         {
             LoadingColumnSpan = (currentState.Name == NarrowStateName) ? 1 : 2;
             IsLoading = true;
@@ -91,7 +141,7 @@ namespace RastaRocketUWP.ViewModels
             try
             {
                 LoadingMessage = "Needs_Loading".GetLocalized();
-                var data = await _api.GetNeedContainerWithRetryAsync();
+                var data = await _api.GetNeedContainerWithRetryAsync(title, status);
 
                 foreach (var item in data.Needs)
                 {

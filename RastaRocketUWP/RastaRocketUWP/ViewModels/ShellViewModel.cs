@@ -143,6 +143,7 @@ namespace RastaRocketUWP.ViewModels
             // Edit String/en-US/Resources.resw: Add a menu item title for each page
             _primaryItems.Add(ShellNavigationItem.FromType<HomePage>("Shell_Home".GetLocalized(), Symbol.Home));
             _primaryItems.Add(ShellNavigationItem.FromType<NeedsPage>("Shell_Needs".GetLocalized(), Symbol.AllApps));
+            _primaryItems.Add(ShellNavigationItem.FromType<UploadPage>("Shell_Upload".GetLocalized(), Symbol.Upload));
             _primaryItems.Add(ShellNavigationItem.FromType<ApiWebPage>("Shell_Api".GetLocalized(), Symbol.Globe));
             _secondaryItems.Add(ShellNavigationItem.FromType<SettingsPage>("Shell_Settings".GetLocalized(), Symbol.Setting));
         }

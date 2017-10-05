@@ -180,11 +180,11 @@ namespace RastaRocketUWP.ViewModels
         {
             StartAtLatest = DateTime.Now;
             _api = new APIService(Helpers.Settings.Username, Helpers.Settings.Password);
-            StatusSelectionChangedCommand = new RelayCommand<SelectionChangedEventArgs>(OnSatusSelectionChanged);
+            StatusSelectionChangedCommand = new RelayCommand<SelectionChangedEventArgs>(OnStatusSelectionChanged);
             WeekFrequencySelectionChangedCommand = new RelayCommand<SelectionChangedEventArgs>(OnFrequencySelectionChanged);
         }
 
-        private void OnSatusSelectionChanged(SelectionChangedEventArgs args)
+        private void OnStatusSelectionChanged(SelectionChangedEventArgs args)
         {
             var selectedStatus = args.AddedItems[0] as String;
             SelectedStatus = selectedStatus;

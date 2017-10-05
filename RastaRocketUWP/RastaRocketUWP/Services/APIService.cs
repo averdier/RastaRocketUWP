@@ -102,19 +102,19 @@ namespace RastaRocketUWP.Services
             }
         }
 
-        public async Task<NeedContainer> GetNeedContainerWithRetryAsync(bool retry = true)
+        public async Task<NeedContainer> GetNeedContainerWithRetryAsync(string titlePrefix = "", string status = "", bool retry = true)
         {
             NeedContainer container = null;
             try
             {
-                container = await GetNeedContainerAsync(_token);
+                container = await GetNeedContainerAsync(_token, titlePrefix, status);
             }
             catch (AuthorizationException)
             {
                 if (retry)
                 {
                     await RenewAuthToken();
-                    container = await GetNeedContainerWithRetryAsync(false);
+                    container = await GetNeedContainerAsync(_token, titlePrefix, status);
                 }
                 else
                 {
@@ -260,18 +260,33 @@ namespace RastaRocketUWP.Services
             return need;
         }
 
-        public async Task<NeedContainer> GetNeedContainerAsync(string token)
+        public async Task<NeedContainer> GetNeedContainerAsync(string token, string titlePrefix = "", string status = "")
         {
             NeedContainer container = null;
 
             HttpClient client = this.GetHttpClientToken(token);
 
-            HttpResponseMessage response = await client.GetAsync(_serverUrl + "needs/");
+            string parameters = "";
+
+            if (titlePrefix != null && titlePrefix != "" && titlePrefix != " " && titlePrefix != String.Empty)
+            {
+                parameters += "?title=" + titlePrefix;
+            }
+
+            if (status != null && status != "" && status != String.Empty && status != "Tous")
+            {
+                if (parameters != "" && parameters != String.Empty) { parameters += "&"; }
+                else { parameters = "?"; }
+                parameters += "status=" + status;
+            }
+            Debug.WriteLine(parameters);
+            HttpResponseMessage response = await client.GetAsync(_serverUrl + "needs/" + parameters);
 
             switch (response.StatusCode)
             {
                 case System.Net.HttpStatusCode.OK:
                     var content = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine(content);
                     container = JsonConvert.DeserializeObject<NeedContainer>(content);
                     break;
 
