@@ -237,6 +237,29 @@ namespace RastaRocketUWP.Services
             return contacts;
         }
 
+        public async Task<NeedModel> PostNeedWithRetryAsync(NeedPostModel model, bool retry = true)
+        {
+            NeedModel need = null;
+            try
+            {
+                need = await PostNeedAsync(_token, model);
+            }
+            catch (AuthorizationException)
+            {
+                if (retry)
+                {
+                    await RenewAuthToken();
+                    need = await PostNeedAsync(_token, model);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return need;
+        }
+
         public async Task<NeedContainer> GetNeedContainerAsync(string token)
         {
             NeedContainer container = null;
@@ -381,6 +404,24 @@ namespace RastaRocketUWP.Services
 
             Debug.WriteLine(contacts);
             return contacts;
+        }
+
+        public async Task<NeedModel> PostNeedAsync(string token, NeedPostModel model)
+        {
+            HttpClient client = this.GetHttpClientToken(token);
+
+            Uri resourceUri = new Uri(_serverUrl + "needs/");
+
+            string jsonObject = "";
+            jsonObject = JsonConvert.SerializeObject(model);
+
+            var response = await client.PostAsync(resourceUri, new System.Net.Http.StringContent(jsonObject, System.Text.Encoding.UTF8, "application/json"));
+
+            var strResponse = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine(strResponse);
+            var need = JsonConvert.DeserializeObject<NeedModel>(strResponse);
+
+            return need;
         }
     }
 }

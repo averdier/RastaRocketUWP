@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Input.Inking;
@@ -26,6 +27,7 @@ namespace RastaRocketUWP.Views
     public sealed partial class NeedAddPage : Page
     {
         public NeedAddPageViewModel ViewModel { get; } = new NeedAddPageViewModel();
+        private string _currentPivotItem;
         public NeedAddPage()
         {
             this.InitializeComponent();
@@ -42,7 +44,7 @@ namespace RastaRocketUWP.Views
             inkCanvas.InkPresenter.UpdateDefaultDrawingAttributes(drawingAttributes);
         }
 
-        private async void InkRecognition()
+        private async Task InkRecognition()
         {
             IReadOnlyList<InkStroke> currentStrokes = inkCanvas.InkPresenter.StrokeContainer.GetStrokes();
 
@@ -73,14 +75,25 @@ namespace RastaRocketUWP.Views
             }
         }
 
-        private void DescriptionPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void DescriptionPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Debug.WriteLine("Changed");
             PivotItem item = ((PivotItem)((Pivot)sender).SelectedItem);
             if (item.Name == "ResultPivotItem")
             {
-                InkRecognition();
+                await InkRecognition();
             }
+            _currentPivotItem = item.Name;
+        }
+
+        private async void AddBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPivotItem == "InkPivotItem")
+            {
+                await InkRecognition();
+            }
+            
+            ViewModel.SaveNeed();
         }
     }
 }

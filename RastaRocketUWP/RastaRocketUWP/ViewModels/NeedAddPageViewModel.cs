@@ -4,6 +4,7 @@ using RastaRocketUWP.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace RastaRocketUWP.ViewModels
 {
     public class NeedAddPageViewModel : Observable
     {
+        public bool SaveBtn_IsEnabled { get { return SelectedCustomer != null && SelectedContact != null && Description != null && Description != string.Empty && Title != string.Empty; } }
         private DateTime _startAtLatest;
         public DateTime StartAtLatest
         {
@@ -41,7 +43,10 @@ namespace RastaRocketUWP.ViewModels
         public String Title
         {
             get { return _title; }
-            set { Set(ref _title, value); }
+            set {
+                Set(ref _title, value);
+                OnPropertyChanged(nameof(SaveBtn_IsEnabled));
+            }
         }
 
         private string _monthDuration;
@@ -76,7 +81,10 @@ namespace RastaRocketUWP.ViewModels
         public String Description
         {
             get { return _description; }
-            set { Set(ref _description, value); }
+            set {
+                Set(ref _description, value);
+                OnPropertyChanged(nameof(SaveBtn_IsEnabled));
+            }
         }
 
         private string _succesKey3;
@@ -97,14 +105,20 @@ namespace RastaRocketUWP.ViewModels
         public CustomerModel SelectedCustomer
         {
             get { return _selectedCustomer; }
-            set { Set(ref _selectedCustomer, value); }
+            set {
+                Set(ref _selectedCustomer, value);
+                OnPropertyChanged(nameof(SaveBtn_IsEnabled));
+            }
         }
 
         private PersonModel _selectedContact;
         public PersonModel SelectedContact
         {
             get { return _selectedContact; }
-            set { Set(ref _selectedContact, value); }
+            set {
+                Set(ref _selectedContact, value);
+                OnPropertyChanged(nameof(SaveBtn_IsEnabled));
+            }
         }
 
         private PersonModel _selectedConsultant1;
@@ -323,6 +337,118 @@ namespace RastaRocketUWP.ViewModels
                 case "ConsultantAutoSuggest5":
                     SelectedConsultant5 = consultant;
                     break;
+            }
+        }
+
+        public async void SaveNeed()
+        {
+            if (SaveBtn_IsEnabled)
+            {
+                NeedPostModel model = new NeedPostModel
+                {
+                    customer = SelectedCustomer.Id,
+                    contact = SelectedContact.Id,
+                    title = Title,
+                    description = Description,
+                    status = "open",
+                    start_at_latest = StartAtLatest.ToString("o")
+                };
+
+                if (SelectedFrequency != null && SelectedFrequency != string.Empty)
+                {
+                    double freq = 0;
+                    double.TryParse(SelectedFrequency, NumberStyles.Float, CultureInfo.InvariantCulture, out freq);
+
+                    model.week_frequency = freq;
+                }
+
+                if (MonthDuration != null && MonthDuration != string.Empty)
+                {
+                    double duration = 0;
+                    double.TryParse(MonthDuration, NumberStyles.Float, CultureInfo.InvariantCulture, out duration);
+
+                    model.month_duration = duration;
+                }
+
+                if (Rate != null && Rate != String.Empty)
+                {
+                    double rate = -1;
+                    double.TryParse(Rate, NumberStyles.Float, CultureInfo.InvariantCulture, out rate);
+                }
+
+                if (SuccessKey1 != null && SuccessKey1 != String.Empty)
+                {
+                    model.success_keys.Add(SuccessKey1);
+                }
+
+                if (SuccessKey2 != null && SuccessKey2 != String.Empty)
+                {
+                    model.success_keys.Add(SuccessKey2);
+                }
+
+                if (SuccessKey3 != null && SuccessKey3 != String.Empty)
+                {
+                    model.success_keys.Add(SuccessKey2);
+                }
+
+                if (SelectedConsultant1!= null && SelectedConsultant1 != null)
+                {
+                    model.consultants.Add(SelectedConsultant1.Id);
+                }
+
+                if (SelectedConsultant2!= null && SelectedConsultant2 != null)
+                {
+                    model.consultants.Add(SelectedConsultant2.Id);
+                }
+
+                if (SelectedConsultant3 != null && SelectedConsultant3 != null)
+                {
+                    model.consultants.Add(SelectedConsultant3.Id);
+                }
+
+                if (SelectedConsultant4 != null && SelectedConsultant4 != null)
+                {
+                    model.consultants.Add(SelectedConsultant4.Id);
+                }
+
+                if (SelectedConsultant5 != null && SelectedConsultant5 != null)
+                {
+                    model.consultants.Add(SelectedConsultant5.Id);
+                }
+
+                try
+                {
+                    var need = await _api.PostNeedWithRetryAsync(model);
+
+                    if (model != null)
+                    {
+                        NavigationService.Navigate<Views.NeedsPage>(need);
+                    }
+
+                    else
+                    {
+                        var unknowErrordialog = new Windows.UI.Popups.MessageDialog(
+                            "Une erreur est survenue",
+                            "Erreur");
+                        unknowErrordialog.Commands.Add(new Windows.UI.Popups.UICommand("Fermer") { Id = 0 });
+
+                        unknowErrordialog.DefaultCommandIndex = 0;
+
+                        var resultUnknow = await unknowErrordialog.ShowAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var dialog = new Windows.UI.Popups.MessageDialog(
+                    ex.Message,
+                    "Erreur"
+                    );
+                    dialog.Commands.Add(new Windows.UI.Popups.UICommand("Fermer") { Id = 0 });
+
+                    dialog.DefaultCommandIndex = 0;
+
+                    var result = await dialog.ShowAsync();
+                }
             }
         }
     }

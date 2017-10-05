@@ -78,60 +78,64 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <toolkit:Expander x:Name="ParametersExpander"
-                              VerticalAlignment="Top" 
-                              Header="Parametres"
-                              Foreground="White"
-                              Background="Gray"
-                              IsExpanded="True"
-                              ExpandDirection="Down">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+            <!-- Parameters-->
+            <Border BorderBrush="Black" BorderThickness="1"
+                    Margin="10,0">
+                <toolkit:Expander x:Name="ParametersExpander"
+                                  Header="Parametres"
+                                  IsExpanded="True"
+                                  HorizontalContentAlignment="Stretch"
+                                  ExpandDirection="Down">
+                    <Grid Margin="10,0,10,15">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Title" 
+                        <!-- Title -->
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Title" 
                                x:Uid="NeedAddPage_NeedTitleHeader" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                        
-                        <TextBox x:Uid="NeedAddPage_NeedTitle" 
+
+                            <TextBox x:Uid="NeedAddPage_NeedTitle" 
                                  Margin="0,10,0,0"
                                  PlaceholderText="Header" 
                                  Text="{x:Bind ViewModel.Title, Mode=TwoWay}"/>
-                    </StackPanel>
-
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Start at latest" 
-                               x:Uid="NeedAddPage_StartAtLatest" 
-                               Style="{ThemeResource SubtitleTextBlockStyle}"/>
-
-                            <CalendarDatePicker x:Name="StartAtLatestDatePicker"
-                                        Margin="0,10,0,0"
-                                        Date="{x:Bind ViewModel.StartAtLatest, Mode=TwoWay, Converter={StaticResource TimeConverter}}"/>
                         </StackPanel>
 
-                        <StackPanel Orientation="Vertical"
-                            Margin="15,0,0,0"
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- Start at latest -->
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Start at latest" 
+                                   x:Uid="NeedAddPage_StartAtLatest" 
+                                   Style="{ThemeResource SubtitleTextBlockStyle}"/>
+
+                                <CalendarDatePicker x:Name="StartAtLatestDatePicker"
+                                        Margin="0,10,0,0"
+                                        Date="{x:Bind ViewModel.StartAtLatest, Mode=TwoWay, Converter={StaticResource TimeConverter}}"/>
+                            </StackPanel>
+
+                            <!-- Customer -->
+                            <StackPanel Orientation="Vertical"
+                                Margin="15,0,0,0"
                                 Grid.Column="1">
-                            <TextBlock Text="Customer" 
+                                <TextBlock Text="Customer" 
                                x:Uid="NeedAddPage_Customer" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
-                            <AutoSuggestBox x:Name="CustomerSuggestBox"
+                                <AutoSuggestBox x:Name="CustomerSuggestBox"
                                     QueryIcon="Find"
                                         MinWidth="155"
                                     MaxWidth="240"
@@ -141,16 +145,17 @@
                                     QuerySubmitted="{x:Bind ViewModel.CustomerSuggestBox_QuerySubmitted}"
                                     TextChanged="{x:Bind ViewModel.CustomerSuggestBox_TextChanged}"
                                     SuggestionChosen="{x:Bind ViewModel.CustomerSuggestBox_SuggestionChosen}"/>
-                        </StackPanel>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Vertical"
+                            <!-- Contact -->
+                            <StackPanel Orientation="Vertical"
                                 Grid.Column="2"
                             Margin="15,0,0,0">
-                            <TextBlock Text="Customer" 
+                                <TextBlock Text="Customer" 
                                x:Uid="NeedAddPage_Contact" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
-                            <AutoSuggestBox x:Name="ContactSuggestBox"
+                                <AutoSuggestBox x:Name="ContactSuggestBox"
                                     QueryIcon="Find"
                                         MinWidth="155"
                                     MaxWidth="240"
@@ -160,129 +165,139 @@
                                     QuerySubmitted="{x:Bind ViewModel.ContactSuggestBox_QuerySubmitted}"
                                     TextChanged="{x:Bind ViewModel.ContactSuggestBox_TextChanged}"
                                     SuggestionChosen="{x:Bind ViewModel.ContactSuggestBox_SuggestionChosen}"/>
-                        </StackPanel>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Vertical"
+                            <!-- Week Frequency -->
+                            <StackPanel Orientation="Vertical"
                                 Grid.Column="3"
                             Margin="15,0,0,0">
-                            <TextBlock Text="Customer" 
+                                <TextBlock Text="Customer" 
                                x:Uid="NeedAddPage_WeekFrequency" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
-                            <ComboBox x:Name="WeekFreqComboBoxChoice"
-                              Margin="0,10,0,0"
-                              ItemsSource="{x:Bind ViewModel.WeekFrequencys, Mode=OneWay}">
-                                <i:Interaction.Behaviors>
-                                    <ic:EventTriggerBehavior EventName="SelectionChanged">
-                                        <ic:InvokeCommandAction Command="{x:Bind ViewModel.WeekFrequencySelectionChangedCommand}" />
-                                    </ic:EventTriggerBehavior>
-                                </i:Interaction.Behaviors>
-                            </ComboBox>
-                        </StackPanel>
+                                <ComboBox x:Name="WeekFreqComboBoxChoice"
+                                      Margin="0,10,0,0"
+                                      MinWidth="100"
+                                      ItemsSource="{x:Bind ViewModel.WeekFrequencys, Mode=OneWay}">
+                                    <i:Interaction.Behaviors>
+                                        <ic:EventTriggerBehavior EventName="SelectionChanged">
+                                            <ic:InvokeCommandAction Command="{x:Bind ViewModel.WeekFrequencySelectionChangedCommand}" />
+                                        </ic:EventTriggerBehavior>
+                                    </i:Interaction.Behaviors>
+                                </ComboBox>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Vertical"
+                            <!-- Month duration-->
+                            <StackPanel Orientation="Vertical"
                                 Grid.Column="4"
-                            Margin="15,0,0,0">
-                            <TextBlock Text="Customer" 
+                                    Margin="15,0,0,0">
+                                <TextBlock Text="Customer" 
                                x:Uid="NeedAddPage_MonthDuration" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
-                            <TextBox x:Uid="NeedAddPage_MonthDurationBox" 
+                                <TextBox x:Uid="NeedAddPage_MonthDurationBox" 
                                  PlaceholderText="Header"
                                  Margin="0,10,0,0"
                                  Text="{x:Bind ViewModel.MonthDuration, Mode=TwoWay}"
                                  MinWidth="100"/>
-                        </StackPanel>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Vertical"
+                            <!-- Rate -->
+                            <StackPanel Orientation="Vertical"
                                 Grid.Column="5"
                             Margin="15,0,0,0">
-                            <TextBlock Text="Customer" 
+                                <TextBlock Text="Customer" 
                                x:Uid="NeedAddPage_Rate" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
-                            <TextBox x:Uid="NeedAddPage_RateBox" 
+                                <TextBox x:Uid="NeedAddPage_RateBox" 
                                  PlaceholderText="Header"
                                  Margin="0,10,0,0"
                                  Text="{x:Bind ViewModel.Rate, Mode=TwoWay}"
                                  MinWidth="100"/>
-                        </StackPanel>
+                            </StackPanel>
 
-                    </Grid>
+                        </Grid>
 
-                    <Grid Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                        <!-- Success Keys -->
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Key" 
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Key" 
                                x:Uid="NeedAddPage_SuccesKey1Header" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
-                            <TextBox x:Uid="NeedAddPage_SuccesKey1Box"
-                                     AcceptsReturn="True"
-                                     TextWrapping="Wrap"
-                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                     PlaceholderText="Header"
-                                     Margin="0,10,0,0"
+                                <TextBox x:Uid="NeedAddPage_SuccesKey1Box"
+                                         AcceptsReturn="True"
+                                         TextWrapping="Wrap"
+                                         MaxHeight="300"
+                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                         PlaceholderText="Header"
+                                         Margin="0,10,0,0"
                                      Text="{x:Bind ViewModel.SuccessKey1, Mode=TwoWay}"/>
-                        </StackPanel>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Vertical"
+                            <StackPanel Orientation="Vertical"
                                     Grid.Column="1"
                                     Margin="15,0,0,0">
 
-                            <TextBlock Text="Key" 
+                                <TextBlock Text="Key" 
                                x:Uid="NeedAddPage_SuccesKey2Header" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
-                            <TextBox x:Uid="NeedAddPage_SuccesKey2Box" 
+                                <TextBox x:Uid="NeedAddPage_SuccesKey2Box" 
                                      AcceptsReturn="True"
                                      TextWrapping="Wrap"
+                                         MaxHeight="300"
                                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                                      PlaceholderText="Header"
                                      Margin="0,10,0,0"
                                      Text="{x:Bind ViewModel.SuccessKey2, Mode=TwoWay}"/>
 
-                        </StackPanel>
-                        
-                        <StackPanel Orientation="Vertical"
+                            </StackPanel>
+
+                            <StackPanel Orientation="Vertical"
                                     Grid.Column="2"
                                     Margin="15,0,0,0">
 
-                            <TextBlock Text="Key" 
+                                <TextBlock Text="Key" 
                                x:Uid="NeedAddPage_SuccesKey3Header" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
-                            <TextBox x:Uid="NeedAddPage_SuccesKey3Box" 
+                                <TextBox x:Uid="NeedAddPage_SuccesKey3Box" 
                                      AcceptsReturn="True"
                                      TextWrapping="Wrap"
+                                         MaxHeight="300"
                                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                                      PlaceholderText="Header"
                                      Margin="0,10,0,0"
                                      Text="{x:Bind ViewModel.SuccessKey3, Mode=TwoWay}"/>
 
-                        </StackPanel>
-                    </Grid>
+                            </StackPanel>
+                        </Grid>
+                        <!-- ./Succes keys -->
 
-                    <Grid Grid.Row="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                        <!-- Consultants -->
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Consultant" 
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Consultant" 
                                x:Uid="NeedAddPage_Consultant1Header" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
-                            <AutoSuggestBox
+                                <AutoSuggestBox
                                     x:Name="ConsultantAutoSuggest1"
                                     QueryIcon="Find"
                                     Margin="0,10,0,0"
@@ -290,16 +305,16 @@
                                     QuerySubmitted="{x:Bind ViewModel.ConsultantSuggestBox_QuerySubmitted}"
                                     TextChanged="{x:Bind ViewModel.ConsultantSuggestBox_TextChanged}"
                                     SuggestionChosen="{x:Bind ViewModel.ConsultantSuggestBox_SuggestionChosen}"/>
-                        </StackPanel>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Vertical"
+                            <StackPanel Orientation="Vertical"
                                     Grid.Column="1"
                                     Margin="15,0,0,0">
-                            <TextBlock Text="Consultant" 
+                                <TextBlock Text="Consultant" 
                                x:Uid="NeedAddPage_Consultant2Header" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
-                            <AutoSuggestBox
+                                <AutoSuggestBox
                                     x:Name="ConsultantAutoSuggest2"
                                     QueryIcon="Find"
                                     Margin="0,10,0,0"
@@ -307,16 +322,16 @@
                                     QuerySubmitted="{x:Bind ViewModel.ConsultantSuggestBox_QuerySubmitted}"
                                     TextChanged="{x:Bind ViewModel.ConsultantSuggestBox_TextChanged}"
                                     SuggestionChosen="{x:Bind ViewModel.ConsultantSuggestBox_SuggestionChosen}"/>
-                        </StackPanel>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Vertical"
+                            <StackPanel Orientation="Vertical"
                                     Grid.Column="2"
                                     Margin="15,0,0,0">
-                            <TextBlock Text="Consultant" 
+                                <TextBlock Text="Consultant" 
                                x:Uid="NeedAddPage_Consultant3Header" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
-                            <AutoSuggestBox
+                                <AutoSuggestBox
                                     x:Name="ConsultantAutoSuggest3"
                                     QueryIcon="Find"
                                     Margin="0,10,0,0"
@@ -325,16 +340,16 @@
                                     TextChanged="{x:Bind ViewModel.ConsultantSuggestBox_TextChanged}"
                                     SuggestionChosen="{x:Bind ViewModel.ConsultantSuggestBox_SuggestionChosen}"/>
 
-                        </StackPanel>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Vertical"
+                            <StackPanel Orientation="Vertical"
                                     Grid.Column="3"
                                     Margin="15,0,0,0">
-                            <TextBlock Text="Consultant" 
+                                <TextBlock Text="Consultant" 
                                x:Uid="NeedAddPage_Consultant4Header" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
-                            <AutoSuggestBox
+                                <AutoSuggestBox
                                     x:Name="ConsultantAutoSuggest4"
                                     QueryIcon="Find"
                                     Margin="0,10,0,0"
@@ -343,16 +358,16 @@
                                     TextChanged="{x:Bind ViewModel.ConsultantSuggestBox_TextChanged}"
                                     SuggestionChosen="{x:Bind ViewModel.ConsultantSuggestBox_SuggestionChosen}"/>
 
-                        </StackPanel>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Vertical"
+                            <StackPanel Orientation="Vertical"
                                     Grid.Column="4"
                                     Margin="15,0,0,0">
-                            <TextBlock Text="Consultant" 
+                                <TextBlock Text="Consultant" 
                                x:Uid="NeedAddPage_Consultant5Header" 
                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
-                            <AutoSuggestBox
+                                <AutoSuggestBox
                                     x:Name="ConsultantAutoSuggest5"
                                     QueryIcon="Find"
                                     Margin="0,10,0,0"
@@ -361,13 +376,17 @@
                                     TextChanged="{x:Bind ViewModel.ConsultantSuggestBox_TextChanged}"
                                     SuggestionChosen="{x:Bind ViewModel.ConsultantSuggestBox_SuggestionChosen}"/>
 
-                        </StackPanel>
+                            </StackPanel>
+
+                        </Grid>
+                        <!-- ./Consultants -->
 
                     </Grid>
-
-                </Grid>
-            </toolkit:Expander>
-
+                </toolkit:Expander>
+            </Border>
+            <!-- ./Parameters -->
+            
+            <!-- Description -->
             <Grid Grid.Row="1">
                 <Pivot x:Name="DescriptionPivot" Title="Description" SelectionChanged="DescriptionPivot_SelectionChanged">
                     <PivotItem Header="Manuscrit" x:Name="InkPivotItem">
@@ -386,12 +405,14 @@
                     </PivotItem>
                 </Pivot>
             </Grid>
+            <!-- ./Description -->
 
             <CommandBar Grid.Row="2">
                 <AppBarButton x:Name="AddBtn"
                           Label="Build"
                           Icon="Save" 
-                          Command="{x:Bind ViewModel.AddClickCommand}"/>
+                          IsEnabled="{x:Bind ViewModel.SaveBtn_IsEnabled, Mode=OneWay}"
+                          Click="AddBtn_Click"/>
                 <AppBarButton x:Name="CancelBtn" 
                           Label="Cancel" 
                           Icon="Cancel"
