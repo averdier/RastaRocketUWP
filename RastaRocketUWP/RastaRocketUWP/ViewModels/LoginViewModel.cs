@@ -74,7 +74,11 @@ namespace RastaRocketUWP.ViewModels
 
                 if (success)
                 {
-                    Debug.WriteLine("ici");
+                    await Task.Run(() =>
+                    {
+                        Helpers.Settings.Username = _email;
+                        Helpers.Settings.Password = _password;
+                    });
                     NavigationService.Navigate(typeof(Views.ShellPage));
                 }
                 else

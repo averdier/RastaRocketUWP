@@ -1,5 +1,7 @@
-﻿using RastaRocketUWP.Helpers;
+﻿using RastaRocketUWP.Extensions;
+using RastaRocketUWP.Helpers;
 using RastaRocketUWP.Models;
+using RastaRocketUWP.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +19,8 @@ namespace RastaRocketUWP.ViewModels
     {
         const string NarrowStateName = "NarrowState";
         const string WideStateName = "WideState";
+
+        private APIService _api;
 
         private VisualState _currentState;
 
@@ -41,6 +45,13 @@ namespace RastaRocketUWP.ViewModels
             set { Set(ref _isLoading, value); }
         }
 
+        private string _loadingMessage;
+        public string LoadingMessage
+        {
+            get { return _loadingMessage; }
+            set { Set(ref _loadingMessage, value); }
+        }
+
         private int _loadingColumnSpan;
         public int LoadingColumnSpan
         {
@@ -61,26 +72,54 @@ namespace RastaRocketUWP.ViewModels
         {
             RefreshItemsClickCommand = new RelayCommand<ItemClickEventArgs>(OnRefreshItemsClick);
             PullRefreshItemsCommand = new RelayCommand<EventArgs>(OnPullRefreshItems);
-            ItemClickCommand = new RelayCommand<ItemClickEventArgs>(OnItemClick);
             AddItemClickCommand = new RelayCommand<RoutedEventArgs>(OnAddItemClick);
             DeleteItemClickCommand = new RelayCommand<RoutedEventArgs>(OnDeleteItemClick);
             _isLoading = false;
             _selected = new NeedModel();
             StateChangedCommand = new RelayCommand<VisualStateChangedEventArgs>(OnStateChanged);
-            AddNeeds();
+            _api = new APIService(Helpers.Settings.Username, Helpers.Settings.Password);
         }
 
-        public void LoadDataAsync(VisualState currentState)
+        public async Task LoadDataAsync(VisualState currentState)
         {
             LoadingColumnSpan = (currentState.Name == NarrowStateName) ? 1 : 2;
-            IsLoading = false;
-            _currentState = currentState;
+            IsLoading = true;
             OnPropertyChanged(nameof(IsViewState));
+            _currentState = currentState;
+            NeedsItems.Clear();
+
+            try
+            {
+                LoadingMessage = "Needs_Loading".GetLocalized();
+                var data = await _api.GetNeedContainerWithRetryAsync();
+
+                foreach (var item in data.Needs)
+                {
+                    NeedsItems.Add(item);
+                }
+
+                if (NeedsItems.Count > 0)
+                {
+                    Selected = NeedsItems[0];
+                }
+
+                IsLoading = false;
+                OnPropertyChanged(nameof(IsViewState));
+            }
+            catch (Exception ex)
+            {
+                IsLoading = false;
+                var errorDialog = new Windows.UI.Popups.MessageDialog(
+                            ex.Message,
+                            "Erreur");
+                errorDialog.Commands.Add(new Windows.UI.Popups.UICommand("Fermer") { Id = 0 });
+                await errorDialog.ShowAsync();
+            }
         }
 
         public void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-
+            
         }
 
         private async void OnRefreshItemsClick(ItemClickEventArgs args)
@@ -90,22 +129,77 @@ namespace RastaRocketUWP.ViewModels
 
         private void OnPullRefreshItems(EventArgs e)
         {
-            AddNeeds();
+            
         }
 
-        private void OnItemClick(ItemClickEventArgs args)
+        public void OnItemClick(object sender, ItemClickEventArgs e)
         {
-            
+            Debug.WriteLine("OnItemClick");
+            NeedModel item = e?.ClickedItem as NeedModel;
+            if (item != null)
+            {
+                if (_currentState.Name == NarrowStateName)
+                {
+                    NavigationService.Navigate<Views.NeedDetailPage>(item);
+                }
+                else
+                {
+                    Selected = item;
+                    OnPropertyChanged(nameof(IsViewState));
+                }
+            }
         }
 
         private void OnAddItemClick(RoutedEventArgs args)
         {
-            
+            NavigationService.Navigate<Views.NeedAddPage>();
         }
 
         private async void OnDeleteItemClick(RoutedEventArgs args)
         {
-            
+            if (Selected != null)
+            {
+                var dialog = new Windows.UI.Popups.MessageDialog(
+                    "NeedDeleteConfirm_Text".GetLocalized(),
+                    "NeedDeleteConfirm_Title".GetLocalized()
+                    );
+                dialog.Commands.Add(new Windows.UI.Popups.UICommand("NeedDeleteConfirm_Primary".GetLocalized()) { Id = 0 });
+                dialog.Commands.Add(new Windows.UI.Popups.UICommand("NeedDeleteConfirm_Secondary".GetLocalized()) { Id = 1 });
+
+                dialog.DefaultCommandIndex = 0;
+                dialog.CancelCommandIndex = 1;
+
+                var result = await dialog.ShowAsync();
+
+                if ((int)result.Id == 0)
+                {
+                    try
+                    {
+                        if (await _api.DeleteNeedWithRetryAsync(Selected.Id))
+                        {
+                            NeedsItems.Remove(Selected);
+                            Selected = NeedsItems.FirstOrDefault();
+                            OnPropertyChanged(nameof(IsViewState));
+                        }
+                        else
+                        {
+                            var unknowErrorDialog = new Windows.UI.Popups.MessageDialog(
+                                "NeedDeleteConfirmError_Text".GetLocalized(),
+                                "ModalError_Title".GetLocalized());
+                            unknowErrorDialog.Commands.Add(new Windows.UI.Popups.UICommand("ModalError_Confirm".GetLocalized()) { Id = 0 });
+                            await unknowErrorDialog.ShowAsync();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var errorDialog = new Windows.UI.Popups.MessageDialog(
+                            ex.Message,
+                            "ModalError_Title".GetLocalized());
+                        errorDialog.Commands.Add(new Windows.UI.Popups.UICommand("Ok") { Id = 0 });
+                        await errorDialog.ShowAsync();
+                    }
+                }
+            }
         }
 
 
@@ -121,7 +215,7 @@ namespace RastaRocketUWP.ViewModels
         {
             for (int i = 0; i < 10; i++)
             {
-                NeedsItems.Insert(0, new NeedModel { Title = "Item " + NeedsItems.Count, CreatedAt="2017-10-04 21:12" });
+                NeedsItems.Insert(0, new NeedModel { Title = "Item " + NeedsItems.Count, Created_At="2017-10-04 21:12" });
             }
         }
 

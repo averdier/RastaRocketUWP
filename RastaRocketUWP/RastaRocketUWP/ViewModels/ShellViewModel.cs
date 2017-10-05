@@ -142,7 +142,7 @@ namespace RastaRocketUWP.ViewModels
             // More on Segoe UI Symbol icons: https://docs.microsoft.com/windows/uwp/style/segoe-ui-symbol-font
             // Edit String/en-US/Resources.resw: Add a menu item title for each page
             _primaryItems.Add(ShellNavigationItem.FromType<HomePage>("Shell_Home".GetLocalized(), Symbol.Home));
-            _primaryItems.Add(ShellNavigationItem.FromType<NeedsPage>("Shell_Needs".GetLocalized(), Symbol.Map));
+            _primaryItems.Add(ShellNavigationItem.FromType<NeedsPage>("Shell_Needs".GetLocalized(), Symbol.AllApps));
             _primaryItems.Add(ShellNavigationItem.FromType<ApiWebPage>("Shell_Api".GetLocalized(), Symbol.Globe));
             _secondaryItems.Add(ShellNavigationItem.FromType<SettingsPage>("Shell_Settings".GetLocalized(), Symbol.Setting));
         }

@@ -23,6 +23,12 @@ namespace RastaRocketUWP.Helpers
         private const string SettingsKey = "settings_key";
         private static readonly string SettingsDefault = string.Empty;
 
+        public const string UsernameKey = "username";
+        private static readonly string UsernameDefault = string.Empty;
+
+        public const string PasswordKey = "password";
+        private static readonly string PasswordDefault = string.Empty;
+
         #endregion
 
 
@@ -35,6 +41,30 @@ namespace RastaRocketUWP.Helpers
             set
             {
                 AppSettings.AddOrUpdateValue(SettingsKey, value);
+            }
+        }
+
+        public static string Username
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(UsernameKey, UsernameDefault);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(UsernameKey, value);
+            }
+        }
+
+        public static string Password
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(PasswordKey, PasswordDefault);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(PasswordKey, value);
             }
         }
 

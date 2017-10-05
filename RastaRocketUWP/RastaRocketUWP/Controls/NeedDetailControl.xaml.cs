@@ -44,6 +44,20 @@ namespace RastaRocketUWP.Controls
         public NeedDetailControl()
         {
             this.InitializeComponent();
+            ControlModel = new NeedDetailControlModel();
+            this.RegisterPropertyChangedCallback(MasterMenuItemProperty, OnMasterMenuItemPropertyChanged);
+        }
+
+        private void OnMasterMenuItemPropertyChanged(DependencyObject sender, DependencyProperty dp)
+        {
+            if (dp == MasterMenuItemProperty)
+            {
+                ControlModel.OnMasterItemChanged(MasterMenuItem);
+            }
+            else
+            {
+                ControlModel.Item = null;
+            }
         }
     }
 }

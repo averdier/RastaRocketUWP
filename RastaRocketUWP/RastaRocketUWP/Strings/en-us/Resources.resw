@@ -117,8 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="NeedDetailControl_Contact.Header" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="NeedDetailControl_CreatedAt.Header" xml:space="preserve">
+    <value>Created at</value>
+  </data>
+  <data name="NeedDetailControl_Customer.Header" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="NeedDetailControl_Status.Header" xml:space="preserve">
+    <value>Status</value>
+  </data>
   <data name="NeedsPage_Title.Text" xml:space="preserve">
     <value>Needs</value>
+  </data>
+  <data name="Needs_Loading" xml:space="preserve">
+    <value>Needs loading</value>
+  </data>
+  <data name="Need_Loading" xml:space="preserve">
+    <value>Need loading</value>
   </data>
   <data name="SearchExpander_Title.Header" xml:space="preserve">
     <value>Search</value>
@@ -134,5 +152,95 @@
   </data>
   <data name="Shell_Settings" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="ModalError_Confirm" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="ModalError_Title" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="NeedAddPage_StartAtLatest.Text" xml:space="preserve">
+    <value>Start at latest</value>
+  </data>
+  <data name="NeedAddPage_Title.Text" xml:space="preserve">
+    <value>Add need</value>
+  </data>
+  <data name="NeedDeleteConfirmError_Text" xml:space="preserve">
+    <value>Error was happened</value>
+  </data>
+  <data name="NeedDeleteConfirm_Primary" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="NeedDeleteConfirm_Secondary" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="NeedDeleteConfirm_Text" xml:space="preserve">
+    <value>Do you wan't delete the need ?</value>
+  </data>
+  <data name="NeedDeleteConfirm_Title" xml:space="preserve">
+    <value>Delete title</value>
+  </data>
+  <data name="NeedDetailControl_Description.Header" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="NeedAddPage_Consultant1Header.Text" xml:space="preserve">
+    <value>Consultant 1</value>
+  </data>
+  <data name="NeedAddPage_Consultant2Header.Text" xml:space="preserve">
+    <value>Consultant 2</value>
+  </data>
+  <data name="NeedAddPage_Consultant3Header.Text" xml:space="preserve">
+    <value>Consultant 3</value>
+  </data>
+  <data name="NeedAddPage_Consultant4Header.Text" xml:space="preserve">
+    <value>Consultant 4</value>
+  </data>
+  <data name="NeedAddPage_Consultant5Header.Text" xml:space="preserve">
+    <value>Consultant 5</value>
+  </data>
+  <data name="NeedAddPage_Contact.Text" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="NeedAddPage_Customer.Text" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="NeedAddPage_MonthDuration.Text" xml:space="preserve">
+    <value>Month duration</value>
+  </data>
+  <data name="NeedAddPage_MonthDurationBox.PlaceholderText" xml:space="preserve">
+    <value>Month duration</value>
+  </data>
+  <data name="NeedAddPage_NeedTitle.PlaceholderText" xml:space="preserve">
+    <value>Enter title</value>
+  </data>
+  <data name="NeedAddPage_NeedTitleHeader.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="NeedAddPage_Rate.Text" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="NeedAddPage_RateBox.PlaceholderText" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="NeedAddPage_SuccesKey1Box.PlaceholderText" xml:space="preserve">
+    <value>Key 1</value>
+  </data>
+  <data name="NeedAddPage_SuccesKey1Header.Text" xml:space="preserve">
+    <value>Key 1</value>
+  </data>
+  <data name="NeedAddPage_SuccesKey2Box.PlaceholderText" xml:space="preserve">
+    <value>Key 2</value>
+  </data>
+  <data name="NeedAddPage_SuccesKey2Header.Text" xml:space="preserve">
+    <value>Key 2</value>
+  </data>
+  <data name="NeedAddPage_SuccesKey3Box.PlaceholderText" xml:space="preserve">
+    <value>Key 3</value>
+  </data>
+  <data name="NeedAddPage_SuccesKey3Header.Text" xml:space="preserve">
+    <value>Key 3</value>
+  </data>
+  <data name="NeedAddPage_WeekFrequency.Text" xml:space="preserve">
+    <value>Week frequency</value>
   </data>
 </root>

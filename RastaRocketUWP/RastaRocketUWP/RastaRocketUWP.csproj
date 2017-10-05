@@ -111,14 +111,19 @@
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Helpers\Singleton.cs" />
+    <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\NeedModel.cs" />
+    <Compile Include="Models\PersonModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Services\APIService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="ValueConverters\BooleanToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\DateTimeConverter.cs" />
+    <Compile Include="ValueConverters\TimeConverter.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\NeedAddPageViewModel.cs" />
+    <Compile Include="ViewModels\NeedDetailViewModel.cs" />
     <Compile Include="ViewModels\NeedsViewModel.cs" />
     <Compile Include="ViewModels\ShellNavigationItem.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
@@ -133,6 +138,12 @@
     </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NeedAddPage.xaml.cs">
+      <DependentUpon>NeedAddPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NeedDetailPage.xaml.cs">
+      <DependentUpon>NeedDetailPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NeedsPage.xaml.cs">
       <DependentUpon>NeedsPage.xaml</DependentUpon>
@@ -193,6 +204,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NeedAddPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NeedDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

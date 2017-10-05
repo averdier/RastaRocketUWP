@@ -1,8 +1,8 @@
-﻿using RastaRocketUWP.ViewModels;
+﻿using RastaRocketUWP.Models;
+using RastaRocketUWP.Services;
+using RastaRocketUWP.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -23,23 +23,29 @@ namespace RastaRocketUWP.Views
     /// <summary>
     /// Une page vide peut être utilisée seule ou constituer une page de destination au sein d'un frame.
     /// </summary>
-    public sealed partial class NeedsPage : Page
+    public sealed partial class NeedDetailPage : Page
     {
-        public NeedsViewModel ViewModel { get; } = new NeedsViewModel();
-
-
-        public NeedsPage()
+        public NeedDetailViewModel ViewModel { get; } = new NeedDetailViewModel();
+        public NeedDetailPage()
         {
             this.InitializeComponent();
         }
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            await ViewModel.LoadDataAsync(WindowStates.CurrentState);
-            Debug.WriteLine(ViewModel.IsLoading);
+
+            ViewModel.LoadData(e.Parameter as NeedModel);
+
+            this.Loaded += NeedDetailPage_Loaded;
         }
 
-        
+        private void NeedDetailPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            if (WindowStates.CurrentState.Name == "WideState")
+            {
+                NavigationService.GoBack();
+            }
+        }
     }
 }

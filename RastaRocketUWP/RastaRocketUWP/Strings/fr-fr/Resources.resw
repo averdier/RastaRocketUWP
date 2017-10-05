@@ -117,8 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="NeedDetailControl_Contact.Header" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="NeedDetailControl_CreatedAt.Header" xml:space="preserve">
+    <value>Crée le</value>
+  </data>
+  <data name="NeedDetailControl_Customer.Header" xml:space="preserve">
+    <value>Client</value>
+  </data>
+  <data name="NeedDetailControl_Status.Header" xml:space="preserve">
+    <value>Statut</value>
+  </data>
   <data name="NeedsPage_Title.Text" xml:space="preserve">
     <value>Besoins</value>
+  </data>
+  <data name="Needs_Loading" xml:space="preserve">
+    <value>Chargement des besoins</value>
+  </data>
+  <data name="Need_Loading" xml:space="preserve">
+    <value>Chargement du besoin</value>
   </data>
   <data name="SearchExpander_Title.Header" xml:space="preserve">
     <value>Recherche</value>
@@ -134,5 +152,95 @@
   </data>
   <data name="Shell_Settings" xml:space="preserve">
     <value>Parametres</value>
+  </data>
+  <data name="ModalError_Confirm" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="ModalError_Title" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="NeedAddPage_StartAtLatest.Text" xml:space="preserve">
+    <value>Démarrer avant</value>
+  </data>
+  <data name="NeedAddPage_Title.Text" xml:space="preserve">
+    <value>Ajouter un besoin</value>
+  </data>
+  <data name="NeedDeleteConfirmError_Text" xml:space="preserve">
+    <value>Une erreur est survenue</value>
+  </data>
+  <data name="NeedDeleteConfirm_Primary" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="NeedDeleteConfirm_Secondary" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="NeedDeleteConfirm_Text" xml:space="preserve">
+    <value>Voulez vous supprimer le besoins ?</value>
+  </data>
+  <data name="NeedDeleteConfirm_Title" xml:space="preserve">
+    <value>Supprimer un besoin</value>
+  </data>
+  <data name="NeedDetailControl_Description.Header" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="NeedAddPage_Consultant1Header.Text" xml:space="preserve">
+    <value>Consultant 1</value>
+  </data>
+  <data name="NeedAddPage_Consultant2Header.Text" xml:space="preserve">
+    <value>Consultant 2</value>
+  </data>
+  <data name="NeedAddPage_Consultant3Header.Text" xml:space="preserve">
+    <value>Consultant 3</value>
+  </data>
+  <data name="NeedAddPage_Consultant4Header.Text" xml:space="preserve">
+    <value>Consultant 4</value>
+  </data>
+  <data name="NeedAddPage_Consultant5Header.Text" xml:space="preserve">
+    <value>Consultant 5</value>
+  </data>
+  <data name="NeedAddPage_Contact.Text" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="NeedAddPage_Customer.Text" xml:space="preserve">
+    <value>Client</value>
+  </data>
+  <data name="NeedAddPage_MonthDuration.Text" xml:space="preserve">
+    <value>Durée (mois)</value>
+  </data>
+  <data name="NeedAddPage_MonthDurationBox.PlaceholderText" xml:space="preserve">
+    <value>Durée (mois)</value>
+  </data>
+  <data name="NeedAddPage_NeedTitle.PlaceholderText" xml:space="preserve">
+    <value>Entrer titre</value>
+  </data>
+  <data name="NeedAddPage_NeedTitleHeader.Text" xml:space="preserve">
+    <value>Titre</value>
+  </data>
+  <data name="NeedAddPage_Rate.Text" xml:space="preserve">
+    <value>Prix</value>
+  </data>
+  <data name="NeedAddPage_RateBox.PlaceholderText" xml:space="preserve">
+    <value>Prix</value>
+  </data>
+  <data name="NeedAddPage_SuccesKey1Box.PlaceholderText" xml:space="preserve">
+    <value>Clé 1</value>
+  </data>
+  <data name="NeedAddPage_SuccesKey1Header.Text" xml:space="preserve">
+    <value>Clé 1</value>
+  </data>
+  <data name="NeedAddPage_SuccesKey2Box.PlaceholderText" xml:space="preserve">
+    <value>Clé 2</value>
+  </data>
+  <data name="NeedAddPage_SuccesKey2Header.Text" xml:space="preserve">
+    <value>Clé 2</value>
+  </data>
+  <data name="NeedAddPage_SuccesKey3Box.PlaceholderText" xml:space="preserve">
+    <value>Clé 3</value>
+  </data>
+  <data name="NeedAddPage_SuccesKey3Header.Text" xml:space="preserve">
+    <value>Clé 3</value>
+  </data>
+  <data name="NeedAddPage_WeekFrequency.Text" xml:space="preserve">
+    <value>Fréquence</value>
   </data>
 </root>

@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using RastaRocketUWP.Exceptions;
+using RastaRocketUWP.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -14,23 +16,6 @@ namespace RastaRocketUWP.Services
         public string Token { get; set; }
     }
 
-    public class Need
-    {
-        public string CreatedAt { get; set; }
-        public string Status { get; set; }
-        public string Title { get; set; }
-        public string Customer { get; set; }
-        public string Id { get; set; }
-        public string Contact { get; set; }
-        public string StartAtLatest { get; set; }
-    }
-
-    public class NeedContainer
-    {
-        public List<Need> Needs { get; set; }
-    }
-
-
     public class APIService
     {
         private const string _serverUrl = "https://levasseurantoine.ovh/rastarocket/api/";
@@ -40,6 +25,12 @@ namespace RastaRocketUWP.Services
         public string Token { get { return _token; } }
 
         public APIService() { }
+
+        public APIService(string username, string password)
+        {
+            this._username = username;
+            this._password = password;
+        }
 
         private HttpClient GetHttpClientBasicAuth(string username, string password)
         {
@@ -133,6 +124,119 @@ namespace RastaRocketUWP.Services
             return container;
         }
 
+        public async Task<Boolean> DeleteNeedWithRetryAsync(string need_id, bool retry = true)
+        {
+            var success = false;
+            try
+            {
+                success = await DeleteNeedAsync(_token, need_id);
+            }
+            catch (AuthorizationException)
+            {
+                if (retry)
+                {
+                    await RenewAuthToken();
+                    success = await DeleteNeedAsync(_token, need_id);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return success;
+        }
+
+        public async Task<NeedModel> GetNeedFromIdWithRetryAsync(string need_id, bool retry = true)
+        {
+            NeedModel need = null;
+            try
+            {
+                need = await GetNeedFromIdAsync(_token, need_id);
+            }
+            catch (AuthorizationException)
+            {
+                if (retry)
+                {
+                    await RenewAuthToken();
+                    need = await GetNeedFromIdAsync(_token, need_id);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return need;
+        }
+
+        public async Task<List<CustomerModel>> AutoSuggestCustomerWithRetryAsync(string prefix, bool retry = true)
+        {
+            List<CustomerModel> customers = new List<CustomerModel>();
+            try
+            {
+                customers = await AutoSuggestCustomerAsync(_token, prefix);
+            }
+            catch (AuthorizationException)
+            {
+                if (retry)
+                {
+                    await RenewAuthToken();
+                    customers = await AutoSuggestCustomerAsync(_token, prefix);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            
+            return customers;
+        }
+
+        public async Task<List<PersonModel>> AutoSuggestContactWithRetryAsync(string prefix, bool retry = true)
+        {
+            List<PersonModel> contacts = new List<PersonModel>();
+            try
+            {
+                contacts = await AutoSuggestContactAsync(_token, prefix);
+            }
+            catch (AuthorizationException)
+            {
+                if (retry)
+                {
+                    await RenewAuthToken();
+                    contacts = await AutoSuggestContactAsync(_token, prefix);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return contacts;
+        }
+
+        public async Task<List<PersonModel>> AutoSuggestConsultantWithRetryAsync(string prefix, bool retry = true)
+        {
+            List<PersonModel> contacts = new List<PersonModel>();
+            try
+            {
+                contacts = await AutoSuggestConsultantAsync(_token, prefix);
+            }
+            catch (AuthorizationException)
+            {
+                if (retry)
+                {
+                    await RenewAuthToken();
+                    contacts = await AutoSuggestConsultantAsync(_token, prefix);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return contacts;
+        }
+
         public async Task<NeedContainer> GetNeedContainerAsync(string token)
         {
             NeedContainer container = null;
@@ -152,6 +256,131 @@ namespace RastaRocketUWP.Services
                     throw new AuthorizationException("Unknown token");
             }
             return container;
+        }
+
+        public async Task<NeedModel> GetNeedFromIdAsync(string token, string need_id)
+        {
+            NeedModel need = null;
+
+            HttpClient client = this.GetHttpClientToken(token);
+
+            HttpResponseMessage response = await client.GetAsync(_serverUrl + "needs/" + need_id);
+
+            switch (response.StatusCode)
+            {
+                case System.Net.HttpStatusCode.OK:
+                    var content = await response.Content.ReadAsStringAsync();
+                    need = JsonConvert.DeserializeObject<NeedModel>(content);
+                    break;
+
+                case System.Net.HttpStatusCode.Unauthorized:
+                    throw new AuthorizationException("Unknown token");
+            }
+            return need;
+        }
+
+        public async Task<bool> DeleteNeedAsync(string token, string need_id)
+        {
+            var success = false;
+
+            HttpClient client = this.GetHttpClientToken(token);
+
+            HttpResponseMessage response = await client.DeleteAsync(_serverUrl + "needs/" + need_id);
+
+            switch (response.StatusCode)
+            {
+                case System.Net.HttpStatusCode.NoContent:
+                    success = true;
+                    break;
+
+                case System.Net.HttpStatusCode.Unauthorized:
+                    throw new AuthorizationException("Unknown token");
+            }
+
+            return success;
+        }
+
+        public async Task<List<CustomerModel>> AutoSuggestCustomerAsync(string token, string prefix)
+        {
+            List<CustomerModel> customers = new List<Models.CustomerModel>();
+
+            HttpClient client = this.GetHttpClientToken(token);
+
+            HttpResponseMessage response = await client.GetAsync(_serverUrl + "customers/?name=" + prefix);
+
+            switch (response.StatusCode)
+            {
+                case System.Net.HttpStatusCode.OK:
+                    var content = await response.Content.ReadAsStringAsync();
+                    CustomerContainer container = JsonConvert.DeserializeObject<CustomerContainer>(content);
+
+                    foreach (var customer in container.Customers)
+                    {
+                        customers.Add(customer);
+                    }
+                    break;
+
+                case System.Net.HttpStatusCode.Unauthorized:
+                    throw new AuthorizationException("Unknown token");
+            }
+
+            return customers;
+        }
+
+        public async Task<List<PersonModel>> AutoSuggestContactAsync(string token, string prefix)
+        {
+            List<PersonModel> contacts = new List<Models.PersonModel>();
+
+            HttpClient client = this.GetHttpClientToken(token);
+
+            HttpResponseMessage response = await client.GetAsync(_serverUrl + "contacts/?name=" + prefix);
+
+            switch (response.StatusCode)
+            {
+                case System.Net.HttpStatusCode.OK:
+                    var content = await response.Content.ReadAsStringAsync();
+                    ContactContainer container = JsonConvert.DeserializeObject<ContactContainer>(content);
+
+                    foreach (var contact in container.Contacts)
+                    {
+                        contacts.Add(contact);
+                    }
+                    break;
+
+                case System.Net.HttpStatusCode.Unauthorized:
+                    throw new AuthorizationException("Unknown token");
+            }
+
+            return contacts;
+        }
+
+        public async Task<List<PersonModel>> AutoSuggestConsultantAsync(string token, string prefix)
+        {
+            List<PersonModel> contacts = new List<Models.PersonModel>();
+
+            HttpClient client = this.GetHttpClientToken(token);
+
+            HttpResponseMessage response = await client.GetAsync(_serverUrl + "consultants/?name=" + prefix);
+
+            switch (response.StatusCode)
+            {
+                case System.Net.HttpStatusCode.OK:
+                    var content = await response.Content.ReadAsStringAsync();
+                    ConsultantContainer container = JsonConvert.DeserializeObject<ConsultantContainer>(content);
+
+                    foreach (var contact in container.Consultants)
+                    {
+                        contacts.Add(contact);
+                        Debug.WriteLine(contact.Name);
+                    }
+                    break;
+
+                case System.Net.HttpStatusCode.Unauthorized:
+                    throw new AuthorizationException("Unknown token");
+            }
+
+            Debug.WriteLine(contacts);
+            return contacts;
         }
     }
 }

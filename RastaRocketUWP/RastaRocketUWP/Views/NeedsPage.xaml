@@ -48,7 +48,7 @@
                            Margin="12,6,0,0"/>
                 <TextBlock  Grid.Column="1"
                             Grid.Row="1"
-                            Text="{x:Bind CreatedAt, Mode=OneWay, Converter={StaticResource DateTimeConverter}}" 
+                            Text="{x:Bind Created_At, Mode=OneWay, Converter={StaticResource DateTimeConverter}}" 
                             x:Phase="2"
                             Style="{ThemeResource BodyTextBlockStyle}"
                             Margin="12,0,0,6"/>
@@ -77,6 +77,17 @@
             Grid.ColumnSpan="2"
             FontSize="28" FontWeight="SemiLight" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" VerticalAlignment="Center"
             Margin="12,0,12,7" Visibility="Collapsed"/>
+
+        <ContentPresenter
+            x:Name="LoadingContentPresenter"
+            Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="{x:Bind ViewModel.LoadingColumnSpan}">
+            <controls:LoadingControl x:Name="LoadingControl"
+                                     Message="{x:Bind ViewModel.LoadingMessage, Mode=OneWay}"
+                                     IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}"/>
+        </ContentPresenter>
 
 
         <Grid
@@ -124,10 +135,13 @@
                     Background="White"
                     OverscrollLimit="0.4"
                     PullThreshold="100"
+                    IsItemClickEnabled="True"
                     ItemsSource="{x:Bind ViewModel.NeedsItems}"
                     ItemTemplate="{StaticResource NeedListViewTemplate }"
                     RefreshCommand="{x:Bind ViewModel.PullRefreshItemsCommand}"
+                    ItemClick="{x:Bind ViewModel.OnItemClick}"
                     IsPullToRefreshWithMouseEnabled="True">
+                
                 <toolkit:PullToRefreshListView.PullToRefreshContent>
                     <TextBlock FontSize="16"
                                Opacity="0.5"
@@ -143,10 +157,9 @@
                 Grid.Row="1"
                 Grid.Column="1"
                 BorderThickness="1,0,0,0"
-                Padding="24,0"
+                Padding="24,0,0,0"
                 BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
-            <controls:NeedDetailControl x:Name="DetailControl"
-                                                  MasterMenuItem="{x:Bind ViewModel.Selected, Mode=OneWay}"/>
+            <controls:NeedDetailControl x:Name="DetailControl" MasterMenuItem="{x:Bind ViewModel.Selected, Mode=OneWay}"/>
         </ContentPresenter>
 
         <CommandBar Grid.Row="2"

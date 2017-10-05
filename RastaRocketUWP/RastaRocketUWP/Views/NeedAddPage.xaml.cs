@@ -1,8 +1,6 @@
 ﻿using RastaRocketUWP.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -23,23 +21,12 @@ namespace RastaRocketUWP.Views
     /// <summary>
     /// Une page vide peut être utilisée seule ou constituer une page de destination au sein d'un frame.
     /// </summary>
-    public sealed partial class NeedsPage : Page
+    public sealed partial class NeedAddPage : Page
     {
-        public NeedsViewModel ViewModel { get; } = new NeedsViewModel();
-
-
-        public NeedsPage()
+        public NeedAddPageViewModel ViewModel { get; } = new NeedAddPageViewModel();
+        public NeedAddPage()
         {
             this.InitializeComponent();
         }
-
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            await ViewModel.LoadDataAsync(WindowStates.CurrentState);
-            Debug.WriteLine(ViewModel.IsLoading);
-        }
-
-        
     }
 }
